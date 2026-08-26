@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="ur-PK">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Relay — Sign in</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="/style.css" />
+</head>
+<body>
+
+  <!-- ===== Auth screen ===== -->
+  <div id="authScreen" class="screen center">
+    <div class="card">
+      <svg class="dial" width="100" height="100" viewBox="0 0 120 120">
+        <circle cx="60" cy="60" r="52" fill="none" stroke="#323768" stroke-width="1"/>
+        <circle cx="60" cy="60" r="44" fill="#242861" stroke="#323768" stroke-width="1"/>
+        <circle cx="60" cy="60" r="6" fill="#F2A65A"/>
+        <line x1="60" y1="60" x2="60" y2="26" stroke="#F2A65A" stroke-width="2" stroke-linecap="round"/>
+      </svg>
+      <h1>RELAY</h1>
+
+      <div class="tabs">
+        <button id="tabLogin" class="tab active">Login</button>
+        <button id="tabRegister" class="tab">Account banayen</button>
+      </div>
+
+      <form id="loginForm">
+        <label>Username</label>
+        <input id="loginUsername" type="text" required maxlength="30" />
+        <label>Password</label>
+        <input id="loginPassword" type="password" required maxlength="100" />
+        <button type="submit">Login</button>
+      </form>
+
+      <form id="registerForm" class="hidden">
+        <label>Naya username chunein</label>
+        <input id="registerUsername" type="text" required maxlength="30" />
+        <label>Password banayen</label>
+        <input id="registerPassword" type="password" required maxlength="100" />
+        <button type="submit">Account banayen</button>
+        <p class="muted small" style="text-align:center; margin-top:10px;">
+          Account banane k baad admin aap ko group me add karega.
+        </p>
+      </form>
+
+      <p id="authError" class="error"></p>
+    </div>
+  </div>
+
+  <!-- ===== Main app (chat + admin) ===== -->
+  <div id="appScreen" class="app hidden">
+    <aside class="sidebar">
+      <div class="sidebar-header">
+        <div>
+          <div class="room-title">RELAY</div>
+          <div class="muted small" id="whoAmI"></div>
+        </div>
+        <button id="logoutBtn" class="icon-btn">Logout</button>
+      </div>
+
+      <div id="adminTools" class="admin-tools hidden">
+        <button id="openAdminPanelBtn" class="icon-btn full">Admin panel</button>
+      </div>
+
+      <div class="group-list-label">Aap k groups</div>
+      <ul id="groupList" class="group-list"></ul>
+      <p id="noGroupsMsg" class="muted small hidden" style="padding: 0 16px;">
+        Abhi tak kisi group me shamil nahi kiye gaye. Admin aap ko add karega.
+      </p>
+    </aside>
+
+    <main class="chat-main">
+      <div id="noGroupSelected" class="empty-state">
+        <p class="muted">Chat shuru karne k liye left se koi group chunein.</p>
+      </div>
+
+      <div id="chatArea" class="chat-area hidden">
+        <header>
+          <div id="activeGroupName" class="room-title"></div>
+        </header>
+        <div id="messages" class="messages"></div>
+        <form id="messageForm" class="composer">
+          <input id="messageInput" type="text" placeholder="Type a message…" maxlength="2000" autocomplete="off" />
+          <button type="submit">Send</button>
+        </form>
+      </div>
+    </main>
+  </div>
+
+  <!-- ===== Admin panel modal ===== -->
+  <div id="adminModal" class="modal-overlay hidden">
+    <div class="modal">
+      <div class="modal-header">
+        <h2>Admin panel</h2>
+        <button id="closeAdminModal" class="icon-btn">Close</button>
+      </div>
+
+      <div class="modal-body">
+        <section>
+          <div class="section-title-row">
+            <h3>Groups</h3>
+          </div>
+          <form id="newGroupForm" class="inline-form">
+            <input id="newGroupName" type="text" placeholder="Naye group ka naam" maxlength="60" />
+            <button type="submit">Banayen</button>
+          </form>
+          <ul id="adminGroupList" class="admin-list"></ul>
+        </section>
+
+        <section id="groupMembersSection" class="hidden">
+          <div class="section-title-row">
+            <h3 id="membersGroupTitle">Members</h3>
+            <button id="backToGroups" class="icon-btn">&larr; Groups</button>
+          </div>
+          <div class="two-col">
+            <div>
+              <h4 class="muted small">Is group me shamil</h4>
+              <ul id="currentMembersList" class="admin-list"></ul>
+            </div>
+            <div>
+              <h4 class="muted small">Baaqi registered users</h4>
+              <ul id="otherUsersList" class="admin-list"></ul>
+            </div>
+          </div>
+        </section>
+      </div>
+    </div>
+  </div>
+
+  <script src="/socket.io/socket.io.js"></script>
+  <script src="/app.js"></script>
+</body>
+</html>
